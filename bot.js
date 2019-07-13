@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
-client.login(process.env.BOT_TOKEN)
+client.login('NTk0NzE5Mjc5NjczMzc2Nzgw.XRjDOA.SwrA-g8TxfwFeUsoeZz9wkOGmZM')
 //process.env.BOT_TOKEN'
 
 function get_current_time()
@@ -56,7 +56,7 @@ function return_formula(str,msg)
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    console.log(get_current_time());/*
+    console.log(get_current_time());
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
@@ -76,7 +76,7 @@ client.on('ready', () => {
         {
             gc.send("<@!324536397803290626>吃晚餐啦");
         }
-        },returntime);*/
+        },returntime);
   });
 
 client.on('message', msg => {
@@ -107,8 +107,9 @@ client.on('message', msg => {
             var today = new Date();
             var bh = Number(splitCommand[2])<=23;
             var bmin = Number(splitCommand[3])<=59;
-            var now_time = (today.getUTCHours()+8)*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
-            console.log(today.getHours()+":"+today.getMinutes()+":"+today.getSeconds());
+            var h = (today.getUTCHours()+8>24?today.getUTCHours()+8-24:today.getUTCHours()+8);
+            var now_time = h*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
+            console.log(h+":"+today.getMinutes()+":"+today.getSeconds());
             var return_time =  Number(splitCommand[2])*60*60*1000+Number(splitCommand[3])*60*1000;
             return_time-=now_time;
             if(bh&&bmin&&(return_time>0))
