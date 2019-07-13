@@ -3,10 +3,80 @@ var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
 client.login(process.env.BOT_TOKEN)
-//'NTk0NzE5Mjc5NjczMzc2Nzgw.XRjDOA.SwrA-g8TxfwFeUsoeZz9wkOGmZM'
+//process.env.BOT_TOKEN'
+
+function get_current_time()
+{
+    var today = new Date();
+    //today.getFullYear()+"/"+today.getUTCMonth()+"/"+today.getDay()+" "+today.getHours()+":"+today.getMinutes()+":"+today.getSeconds()
+    var current_time = today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
+    return current_time;
+}
+
+//---------------------公式圖片----------------------
+function formula_img(src,msg)
+{
+        var writeStream = fs.createWriteStream('image.png');
+        var readStream = request(src)
+        readStream.pipe(writeStream);
+        readStream.on('end', function() {
+            console.log('文件下載成功');
+        });
+        readStream.on('error', function() {
+            console.log("錯誤:" + err)
+        })
+        writeStream.on("finish", function() {
+            console.log("文件寫入成功");
+            writeStream.end();
+            msg.channel.send({files:["./image.png"]})
+        });    
+}
+
+//---------------------公式----------------------
+function return_formula(str,msg)
+{
+    if(str=="歐姆定律")
+    {
+        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;V=IR";
+        formula_img(url,msg);
+    }
+    if(str=="庫倫定律")
+    {
+        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;F=K"+"\\"+"times"+"\\"+"dfrac{Q_1"+"\\"+"times Q_2}{R^2}";
+        formula_img(url,msg);
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K="+"\\"+"times"+"10^9";
+        formula_img(url,msg);
+    }
+    if(str=="K常數")
+    {
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K="+"\\"+"times"+"10^9";
+        formula_img(url,msg);
+    }
+}
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    console.log(get_current_time());
+    var today = new Date();
+    var i=0;
+    var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
+    if(today.getHours()<12)
+    {
+        returntime = 12*60*60*1000-returntime;
+        i=1;
+    }
+    else if(today.getHours()<18)
+    {
+        returntime = 18*60*60*1000-returntime;
+        i=1;
+    }
+    var gc = client.channels.get("594119720022573076");
+    client.setTimeout(function(){
+        if(i==1)
+        {
+            gc.send("<@!324536397803290626>吃晚餐啦");
+        }
+        },returntime);
   });
 
 client.on('message', msg => {
@@ -14,16 +84,56 @@ client.on('message', msg => {
     {
         return;
     }
-    if (msg.content.substring(0, 1) === '!')
-    {
+    if (msg.content.substring(0, 1) === '!') {
         var args = msg.content.substring(1).split(' ');
         var cmd = args[0];
         args = args.splice(1);
-        switch(cmd) 
-        {
+        switch(cmd) {
             case 'ping':
                 msg.reply('Pong!');
             break;
          }
+     }
+     if(msg.content.startsWith(client.user.toString()))
+     {
+        let fullCommand = msg.content.substr(21)
+        let splitCommand = fullCommand.split(" ")
+        let primaryCommand = splitCommand[1] 
+        if(primaryCommand=="提醒我")
+        {/*
+            var by = splitCommand[2]>=today.getFullYear().toString();
+            var bmonth = splitCommand[3]>=today.getMonth().toString();
+            var bd = splitCommand[4]>=today.getDate().toString();*/
+            var today = new Date();
+            var bh = Number(splitCommand[2])<=23;
+            var bmin = Number(splitCommand[3])<=59;
+            var now_time = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
+            console.log(today.getHours()+":"+today.getMinutes()+":"+today.getSeconds());
+            var return_time =  Number(splitCommand[2])*60*60*1000+Number(splitCommand[3])*60*1000;
+            return_time-=now_time;
+            if(bh&&bmin&&(return_time>0))
+            {
+                client.setTimeout(function(){
+                    msg.channel.send(msg.author+"要"+splitCommand[splitCommand.length-1]+"了");
+                },return_time);
+                if(splitCommand[3].length<2)
+                {
+                    splitCommand[3] = "0"+splitCommand[3];
+                }
+                msg.channel.sendMessage("好!我會在"+splitCommand[2]+":"+splitCommand[3]+"提醒"+msg.author+"要"+splitCommand[splitCommand.length-1]);
+            }
+            else
+            {
+                msg.channel.sendMessage(msg.author+"時間格式錯誤，請重新輸入");
+            }
+        }
+        if(primaryCommand == "公式")
+        {
+            return_formula(splitCommand[2],msg);
+        }
+        else
+        {
+            msg.reply("沒有這個指令喔!你想跟我聊天嗎?");
+        }
      }
   });
