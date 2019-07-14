@@ -89,9 +89,8 @@ function game_activity()
     var d = parseInt(time/(24*60*60*1000));
     var h = parseInt(time%(24*60*60*1000)/60/60/1000);
     var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);
-    var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);
-    client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分"+s+"秒", {type: "PLAYING"});
-    console.log("統測倒數"+d+"天"+h+"時"+m+"分"+s+"秒");
+    //var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);
+    client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
 }
 
 client.on('ready', () => {
