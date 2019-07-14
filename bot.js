@@ -52,6 +52,21 @@ function return_formula(str,msg)
         url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K="+"\\"+"times"+"10^9";
         formula_img(url,msg);
     }
+    if(str=="電功率")
+    {
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;P=IV=I^2R="+"\\"+"dfrac{V^2}{R}";
+        formula_img(url,msg);
+    }
+    if(str=="電能")
+    {
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;W=Pt";
+        formula_img(url,msg);
+    }
+    if(str=="馬力")
+    {
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;1HP=746W";
+        formula_img(url,msg);
+    }
 }
 
 client.on('ready', () => {
