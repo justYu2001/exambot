@@ -99,14 +99,15 @@ client.on('ready', () => {
     console.log(get_current_time());/*
     client.setInterval(function(){
         game_activity();
-    },1000);*/
+    },1000);
     client.user.setPresence({
         status: 'online',
         game: { 
             name: 'code',
             type: 'PLAYING'
         }
-    })
+    })*/
+    client.user.setActivity("hi");
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
