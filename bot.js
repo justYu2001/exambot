@@ -49,7 +49,7 @@ function return_formula(str,msg)
     }
     if(str=="K常數")
     {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K="+"\\"+"times"+"10^9";
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K=9"+"\\"+"times"+"10^9";
         formula_img(url,msg);
     }
     if(str=="電功率")
