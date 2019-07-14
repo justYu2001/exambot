@@ -105,7 +105,7 @@ client.on('ready', () => {
             name: 'code',
             type: 'PLAYING'
         },
-        status: 'idle'
+        status: 'online'
     })
     var today = new Date();
     var i=0;
