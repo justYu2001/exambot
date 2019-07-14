@@ -67,6 +67,11 @@ function return_formula(str,msg)
         url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;1HP=746W";
         formula_img(url,msg);
     }
+    if(str=="電子的電量")
+    {
+        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;e=-1.602"+"\\"+"times10^{-19}C";
+        formula_img(url,msg);
+    }
 }
 
 client.on('ready', () => {
