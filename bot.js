@@ -81,7 +81,7 @@ gd.setDate(2);
 gd.setHours(0);
 gd.setMinutes(0);
 gd.setMilliseconds(0);
-/*
+
 function game_activity()
 {
     var nd = new Date();
@@ -92,15 +92,14 @@ function game_activity()
     var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);
     client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分"+s+"秒", {type: "PLAYING"});
     console.log("統測倒數"+d+"天"+h+"時"+m+"分"+s+"秒");
-}*/
+}
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    console.log(get_current_time());/*
+    console.log(get_current_time());
     client.setInterval(function(){
         game_activity();
-    },1000);*/
-    client.user.setGame("t");
+    },1000);
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
