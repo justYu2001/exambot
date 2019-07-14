@@ -101,11 +101,11 @@ client.on('ready', () => {
         game_activity();
     },1000);*/
     client.user.setPresence({
+        status: 'online',
         game: { 
             name: 'code',
             type: 'PLAYING'
-        },
-        status: 'online'
+        }
     })
     var today = new Date();
     var i=0;
