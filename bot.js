@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
-client.login('NTk0NzE5Mjc5NjczMzc2Nzgw.XRjDOA.SwrA-g8TxfwFeUsoeZz9wkOGmZM')
+client.login(process.env.BOT_TOKEN)
 //process.env.BOT_TOKEN'
 
 function get_current_time()
