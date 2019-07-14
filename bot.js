@@ -96,10 +96,17 @@ function game_activity()
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    console.log(get_current_time());
+    console.log(get_current_time());/*
     client.setInterval(function(){
         game_activity();
-    },1000);
+    },1000);*/
+    client.user.setPresence({
+        game: { 
+            name: 'code',
+            type: 'PLAYING'
+        },
+        status: 'idle'
+    })
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
