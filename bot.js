@@ -78,6 +78,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     console.log(get_current_time());
     var today = new Date();
+    console.log(today.getTimezoneOffset());
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
     if(today.getHours()<12)
