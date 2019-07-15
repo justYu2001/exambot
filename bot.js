@@ -91,6 +91,7 @@ function game_activity()
     var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);/*
     var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);*/
     client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
+    console.log("統測倒數"+d+"天");
 }
 
 client.on('ready', () => {
@@ -148,19 +149,13 @@ client.on('message', msg => {
             var bmonth = splitCommand[3]>=today.getMonth().toString();
             var bd = splitCommand[4]>=today.getDate().toString();*/
             var nt = new Date();
-            var gt = new Date();
             var bh = Number(splitCommand[2])<=23;
             var bmin = Number(splitCommand[3])<=59;
             var h = (nt.getUTCHours()+8>24?nt.getUTCHours()+8-24:nt.getUTCHours()+8);
+            var now_time = h*60*60*1000+nt.getMinutes()*60*1000+nt.getSeconds()*1000;
             console.log(h+":"+nt.getMinutes()+":"+nt.getSeconds());
-            gt.setUTCFullYear(nt.getUTCFullYear());
-            gt.setUTCMonth(nt.getUTCMonth());
-            gt.setDate(nt.getDate());
-            gt.setUTCHours(Number(splitCommand[2]));
-            gt.setUTCMinutes(Number(splitCommand[3]));
-            gt.setUTCMilliseconds(0);
-            var return_time = gt.getTime() - (nt.getTime()+ 8*60*60*1000);
-            console.log(return_time);
+            var return_time =  Number(splitCommand[2])*60*60*1000+Number(splitCommand[3])*60*1000;
+            return_time-=now_time;
             if(bh&&bmin&&(return_time>0))
             {
                 client.setTimeout(function(){
