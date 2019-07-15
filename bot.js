@@ -98,7 +98,7 @@ client.on('ready', () => {
     console.log(get_current_time());
     client.setInterval(function(){
         game_activity();
-    },1000);
+    },1000);/*
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
@@ -118,7 +118,7 @@ client.on('ready', () => {
         {
             gc.send("<@!324536397803290626>吃晚餐啦");
         }
-        },returntime);
+        },returntime);*/
   });
 
 client.on('message', msg => {
