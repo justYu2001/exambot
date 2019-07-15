@@ -86,11 +86,12 @@ function game_activity()
 {
     var nd = new Date();
     var time=gd.getTime()-(nd.getTime()+8*60*60*1000);
-    var d = parseInt(time/(24*60*60*1000));
+    var d = parseInt(time/(24*60*60*1000));/*
     var h = parseInt(time%(24*60*60*1000)/60/60/1000);
     var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);
-    //var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);
-    client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
+    var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);*/
+    client.user.setActivity("統測倒數"+d+"天", {type: "PLAYING"});
+    console.log("統測倒數"+d+"天");
 }
 
 client.on('ready', () => {
@@ -174,9 +175,9 @@ client.on('message', msg => {
         {
             return_formula(splitCommand[2],msg);
         }
-        else
-        {
-            msg.reply("沒有這個指令喔!你想跟我聊天嗎?");
-        }
      }
+    if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
+    {
+        msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
+    }
   });
