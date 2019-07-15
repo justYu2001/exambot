@@ -91,7 +91,6 @@ function game_activity()
     var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);/*
     var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);*/
     client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
-    console.log("統測倒數"+d+"天");
 }
 
 client.on('ready', () => {
@@ -99,7 +98,8 @@ client.on('ready', () => {
     console.log(get_current_time());
     client.setInterval(function(){
         game_activity();
-    },1000);/*
+    },1000);
+    /*
     var today = new Date();
     var i=0;
     var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
@@ -147,14 +147,20 @@ client.on('message', msg => {
             var by = splitCommand[2]>=today.getFullYear().toString();
             var bmonth = splitCommand[3]>=today.getMonth().toString();
             var bd = splitCommand[4]>=today.getDate().toString();*/
-            var today = new Date();
+            var nt = new Date();
+            var gt = new Date();
             var bh = Number(splitCommand[2])<=23;
             var bmin = Number(splitCommand[3])<=59;
-            var h = (today.getUTCHours()+8>24?today.getUTCHours()+8-24:today.getUTCHours()+8);
-            var now_time = h*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
-            console.log(h+":"+today.getMinutes()+":"+today.getSeconds());
-            var return_time =  Number(splitCommand[2])*60*60*1000+Number(splitCommand[3])*60*1000;
-            return_time-=now_time;
+            var h = (nt.getUTCHours()+8>24?nt.getUTCHours()+8-24:nt.getUTCHours()+8);
+            console.log(h+":"+nt.getMinutes()+":"+nt.getSeconds());
+            gt.setUTCFullYear(nt.getUTCFullYear());
+            gt.setUTCMonth(nt.getUTCMonth());
+            gt.setDate(nt.getDate());
+            gt.setUTCHours(Number(splitCommand[2]));
+            gt.setUTCMinutes(Number(splitCommand[3]));
+            gt.setUTCMilliseconds(0);
+            var return_time = gt.getTime() - (nt.getTime()+ 8*60*60*1000);
+            console.log(return_time);
             if(bh&&bmin&&(return_time>0))
             {
                 client.setTimeout(function(){
@@ -179,5 +185,9 @@ client.on('message', msg => {
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
+    }
+    if(msg.content=="t")
+    {
+        msg.channel.sendMessage(client.token);
     }
   });
