@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
-client.login(process.env.BOT_TOKEN)
+client.login('NTk0NzE5Mjc5NjczMzc2Nzgw.XSpySw.t1XlmdxGB5WixD_jFWFAPso1Dfs')
 //process.env.BOT_TOKEN'
 
 function get_current_time()
@@ -86,11 +86,11 @@ function game_activity()
 {
     var nd = new Date();
     var time=gd.getTime()-(nd.getTime()+8*60*60*1000);
-    var d = parseInt(time/(24*60*60*1000));/*
+    var d = parseInt(time/(24*60*60*1000));
     var h = parseInt(time%(24*60*60*1000)/60/60/1000);
-    var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);
+    var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);/*
     var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);*/
-    client.user.setActivity("統測倒數"+d+"天", {type: "PLAYING"});
+    client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
     console.log("統測倒數"+d+"天");
 }
 
