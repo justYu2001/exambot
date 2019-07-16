@@ -42,10 +42,11 @@ function return_formula(str,msg)
     }
     if(str=="庫倫定律")
     {
-        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;F=K"+"\\"+"times"+"\\"+"dfrac{Q_1"+"\\"+"times Q_2}{R^2}";
+        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;F=K"+"\\"+"times"+"\\"+"dfrac{Q_1"+"\\"+"times Q_2}{"+"\\"+"varepsilon_rR^2}";
         formula_img(url,msg);
         url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K=9"+"\\"+"times"+"10^9";
         formula_img(url,msg);
+        msg.channel.sendMessage("相對介質系數ε題目沒給就為1，在空氣中也是");
     }
     if(str=="K常數")
     {
