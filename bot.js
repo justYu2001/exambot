@@ -74,6 +74,7 @@ function return_formula(str,msg)
         formula_img(url,msg);
     }
 }
+var gc;
 
 var gd = new Date();
 gd.setFullYear(2020);
@@ -92,7 +93,6 @@ function game_activity()
     var m = parseInt((time%(24*60*60*1000)%(60*60*1000))/60/1000);/*
     var s = parseInt(time%(24*60*60*1000)%(60*60*1000)%(60*1000)/1000);*/
     client.user.setActivity("統測倒數"+d+"天"+h+"時"+m+"分", {type: "PLAYING"});
-    console.log("統測倒數"+d+"天");
 }
 
 client.on('ready', () => {
@@ -177,13 +177,24 @@ client.on('message', msg => {
         {
             return_formula(splitCommand[2],msg);
         }
+        if(primaryCommand == "寫公式")
+        {
+            var myserver = client.channels.get("593050699705614338");
+            myserver.sendMessage("=tex "+fullCommand.substr(5));
+            gc = msg;
+        }
+        if(primaryCommand == "算")
+        {
+
+        }
      }
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
     }
-    if(msg.content=="t")
+    if(msg.author.id =="134073775925886976")
     {
-        msg.channel.sendMessage(client.token);
+        var Attachment = (msg.attachments).array();
+        gc.channel.send({files:[Attachment[0].url]});
     }
   });
