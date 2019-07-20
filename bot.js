@@ -183,21 +183,30 @@ client.on('message', msg => {
             var myserver = client.channels.get("593050699705614338");
             myserver.sendMessage("=tex "+fullCommand.substr(5));
             gc = msg;
-            run=1;
         }
         if(primaryCommand == "算")
         {
-
+            var myserver = client.channels.get("593050699705614338");
+            myserver.sendMessage("=wolf "+fullCommand.substr(3));
+            gc = msg;
         }
      }
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
     }
-    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338"&&run==1)
+    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338")
     {
-        var Attachment = (msg.attachments).array();
-        gc.channel.send({files:[Attachment[0].url]});
-        run=0;
+        if(msg.content.includes("Wolfram|Alpha didn't send a result back."))
+        {
+            gc.channel.send("指令錯誤，請重新輸入");
+        }
+        else
+        {
+            var Attachment = (msg.attachments).array();
+            Attachment.forEach(function(e){
+                gc.channel.send({files:[e.url]});
+            });
+        }
     }
   });
