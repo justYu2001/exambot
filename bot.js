@@ -140,7 +140,7 @@ client.on('message', msg => {
             break;
          }
      }
-     if(msg.content.startsWith(client.user.toString()))
+     if(msg.content.startsWith("<@!594719279673376780>"))
      {
         let fullCommand = msg.content.substr(21)
         let splitCommand = fullCommand.split(" ")
