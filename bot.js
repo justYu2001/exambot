@@ -75,6 +75,7 @@ function return_formula(str,msg)
     }
 }
 var gc;
+var run = 0;
 
 var gd = new Date();
 gd.setFullYear(2020);
@@ -182,6 +183,7 @@ client.on('message', msg => {
             var myserver = client.channels.get("593050699705614338");
             myserver.sendMessage("=tex "+fullCommand.substr(5));
             gc = msg;
+            run=1;
         }
         if(primaryCommand == "算")
         {
@@ -192,9 +194,10 @@ client.on('message', msg => {
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
     }
-    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338")
+    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338"&&run==1)
     {
         var Attachment = (msg.attachments).array();
         gc.channel.send({files:[Attachment[0].url]});
+        run=0;
     }
   });
