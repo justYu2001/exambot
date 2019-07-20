@@ -192,7 +192,7 @@ client.on('message', msg => {
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
     }
-    if(msg.author.id =="134073775925886976")
+    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338")
     {
         var Attachment = (msg.attachments).array();
         gc.channel.send({files:[Attachment[0].url]});
