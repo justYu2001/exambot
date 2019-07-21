@@ -189,6 +189,12 @@ client.on('message', msg => {
             myserver.sendMessage("=wolf "+fullCommand.substr(3));
             gc = msg;
         }
+        if(primaryCommand == "因式分解")
+        {
+            var myserver = client.channels.get("593050699705614338");
+            myserver.sendMessage("=wolf factor "+fullCommand.substr(6));
+            gc = msg;
+        }
      }
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
