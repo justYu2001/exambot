@@ -101,6 +101,8 @@ client.on('ready', () => {
     client.setInterval(function(){
         game_activity();
     },1000);
+    var c = client.channels.get("593050699705614338");
+    c.send({files:["./image.png"]});
     /*
     var today = new Date();
     var i=0;
