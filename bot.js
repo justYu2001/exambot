@@ -102,7 +102,30 @@ client.on('ready', () => {
         game_activity();
     },1000);
     var c = client.channels.get("593050699705614338");
-    c.send({files:["./image.png"]});
+    fs.open('2019730.txt', 'r', function (err, fd) {
+ 
+        if (err) {
+            return console.error(err);
+        }
+     
+        var buffr = new Buffer(1024);
+     
+        fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) {
+     
+            if (err) throw err;
+     
+            // Print only read bytes to avoid junk.
+            if (bytes > 0) {
+                console.log(buffr.slice(0, bytes).toString());
+                c.send(buffr.slice(0, bytes).toString());
+            }
+     
+            // Close the opened file.
+            fs.close(fd, function (err) {
+                if (err) throw err;
+            });
+        });
+    });
     /*
     var today = new Date();
     var i=0;
