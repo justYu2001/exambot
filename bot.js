@@ -114,7 +114,7 @@ client.on('ready', () => {
     client.setInterval(function(){
             var now_time = new Date();
             c.send(now_time.getUTCHours()+8);
-            if(now_time.getUTCHours()+8==20&&now_time.getUTCMinutes()==0&&now_time.getUTCSeconds()==0)
+            if(now_time.getUTCHours()+8==20&&now_time.getUTCMinutes()==24&&now_time.getUTCSeconds()==0)
             {
                 var emojis_list=["604532826649526322","604532855938482176","501699773481484288","607826081440858132"];
                 fs.open('exam.txt', 'r', function (err, fd) {
@@ -132,7 +132,7 @@ client.on('ready', () => {
                         // Print only read bytes to avoid junk.
                         if (bytes > 0) {
                             console.log(buffr.slice(0, bytes).toString());
-                            PSC.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*5)])}`);
+                            c.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*5)])}`);
                         }
                  
                         // Close the opened file.
