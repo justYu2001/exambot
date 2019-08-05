@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
-client.login('process.env.BOT_TOKEN')
+client.login(process.env.BOT_TOKEN)
 //process.env.BOT_TOKEN'
 
 function emoji(e_id)
