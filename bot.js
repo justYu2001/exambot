@@ -215,6 +215,49 @@ client.on('message', msg => {
             myserver.sendMessage("=wolf factor "+fullCommand.substr(6));
             gc = msg;
         }
+        if(primaryCommand == "今天考什麼")
+        {
+            var t = new Date();
+            t.setHours(t.getUTCHours()+8);
+            if(((t.getDate()==1||t.getDate()==2||t.getDate()==5)&&t.getHours()>=12)||((t.getDate()==3||t.getDate()==4)&&t.getHours()>=17))
+            {
+                msg.channel.send("放學了啦");
+            }
+            else
+            {
+                fs.open('exam.txt', 'r', function (err, fd) {
+ 
+                    if (err) {
+                        return console.error(err);
+                    }
+                 
+                    var buffr = new Buffer(1024);
+                 
+                    fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) 
+                    {
+                        console.log(bytes);
+                        if (err)
+                        {
+                            throw err;
+                        } 
+                 
+                        // Print only read bytes to avoid junk.
+                        if (bytes > 5) {
+                            msg.channel.send(buffr.slice(0, bytes).toString().substr(5));
+                        }
+                        else
+                        {
+                            msg.channel.send("今天沒有考試");
+                        }
+                 
+                        // Close the opened file.
+                        fs.close(fd, function (err) {
+                            if (err) throw err;
+                        });
+                    });
+                })
+            }
+        }
      }
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
