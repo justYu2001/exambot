@@ -131,7 +131,7 @@ client.on('ready', () => {
                         if (bytes > 0) {
                             var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
                             console.log(buffr.slice(0, bytes).toString());
-                            PSC.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*5)])}`);
+                            PSC.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*4)])}`);
                         }
                  
                         // Close the opened file.
