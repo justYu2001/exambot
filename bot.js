@@ -113,8 +113,7 @@ client.on('ready', () => {
     c.send(`${emoji("501700003233005579")}`);
     client.setInterval(function(){
             var now_time = new Date();
-            c.send(now_time.getUTCHours()+8);
-            if(now_time.getUTCHours()+8==20&&now_time.getUTCMinutes()==24&&now_time.getUTCSeconds()==0)
+            if(now_time.getUTCHours()+8==20&&now_time.getUTCMinutes()==0&&now_time.getUTCSeconds()==0)
             {
                 var emojis_list=["604532826649526322","604532855938482176","501699773481484288","607826081440858132"];
                 fs.open('exam.txt', 'r', function (err, fd) {
