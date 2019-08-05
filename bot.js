@@ -2,8 +2,14 @@ const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
 const client = new Discord.Client();
-client.login(process.env.BOT_TOKEN)
+client.login('process.env.BOT_TOKEN')
 //process.env.BOT_TOKEN'
+
+function emoji(e_id)
+{
+    const e = client.emojis.find(emoji => emoji.id === e_id)
+    return e;
+}
 
 function get_current_time()
 {
@@ -28,7 +34,7 @@ function formula_img(src,msg)
         writeStream.on("finish", function() {
             console.log("文件寫入成功");
             writeStream.end();
-            msg.channel.send({files:["./image.png"]})
+            msg.channel.send({files:["./image.png"]});
         });    
 }
 
@@ -75,6 +81,7 @@ function return_formula(str,msg)
     }
 }
 var gc;
+var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
 
 var gd = new Date();
 gd.setFullYear(2020);
@@ -82,7 +89,7 @@ gd.setMonth(4);
 gd.setDate(2);
 gd.setHours(0);
 gd.setMinutes(0);
-gd.setMilliseconds(0);
+gd.setSeconds(0);
 
 function game_activity()
 {
@@ -101,52 +108,40 @@ client.on('ready', () => {
     client.setInterval(function(){
         game_activity();
     },1000);
+    
     var c = client.channels.get("593050699705614338");
-    fs.open('2019730.txt', 'r', function (err, fd) {
+    c.send(`${emoji("501700003233005579")}`);
+    client.setInterval(function(){
+            var now_time = new Date();
+            if(now_time.getUTCHours()+8==17&&now_time.getUTCMinutes()==0&&now_time.getUTCSeconds()==0)
+            {
+                var emojis_list=["604532826649526322","604532855938482176","501699773481484288","607826081440858132"];
+                fs.open('exam.txt', 'r', function (err, fd) {
  
-        if (err) {
-            return console.error(err);
-        }
-     
-        var buffr = new Buffer(1024);
-     
-        fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) {
-     
-            if (err) throw err;
-     
-            // Print only read bytes to avoid junk.
-            if (bytes > 0) {
-                console.log(buffr.slice(0, bytes).toString());
-                c.send(buffr.slice(0, bytes).toString());
+                    if (err) {
+                        return console.error(err);
+                    }
+                 
+                    var buffr = new Buffer(1024);
+                 
+                    fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) {
+                 
+                        if (err) throw err;
+                 
+                        // Print only read bytes to avoid junk.
+                        if (bytes > 0) {
+                            console.log(buffr.slice(0, bytes).toString());
+                            c.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*5)])}`);
+                        }
+                 
+                        // Close the opened file.
+                        fs.close(fd, function (err) {
+                            if (err) throw err;
+                        });
+                    });
+                })
             }
-     
-            // Close the opened file.
-            fs.close(fd, function (err) {
-                if (err) throw err;
-            });
-        });
-    });
-    /*
-    var today = new Date();
-    var i=0;
-    var returntime = today.getHours()*60*60*1000+today.getMinutes()*60*1000+today.getSeconds()*1000;
-    if(today.getHours()<12)
-    {
-        returntime = 12*60*60*1000-returntime;
-        i=1;
-    }
-    else if(today.getHours()<18)
-    {
-        returntime = 18*60*60*1000-returntime;
-        i=1;
-    }
-    var gc = client.channels.get("594119720022573076");
-    client.setTimeout(function(){
-        if(i==1)
-        {
-            gc.send("<@!324536397803290626>吃晚餐啦");
-        }
-        },returntime);*/
+        },1000);
   });
 
 client.on('message', msg => {
@@ -238,5 +233,26 @@ client.on('message', msg => {
                 gc.channel.send({files:[e.url]});
             });
         }
+    }
+    if(msg.content.startsWith("re"))
+    {
+        let str = msg.content.split(" ");
+        var c = client.channels.get(str[5]);
+        var gt = new Date();
+        gt.setFullYear(Number(str[1]));
+        gt.setMonth(Number(str[2])-1);
+        gt.setDate(Number(str[3]));
+        gt.setHours(Number(str[4]));
+        gt.setMinutes(12);
+        gt.setSeconds(0);
+        var nt = new Date();
+        console.log(nt.getHours()+":"+nt.getMinutes()+":"+nt.getSeconds());
+        console.log(gt.getHours()+":"+gt.getMinutes()+":"+gt.getSeconds());
+        var time=gt.getTime()-(nt.getTime()+8*60*60*1000);
+        console.log(time);
+        client.setTimeout(function(){
+            c.send(str[6]);
+        },time);
+
     }
   });
