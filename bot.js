@@ -108,7 +108,7 @@ client.on('ready', () => {
         game_activity();
     },1000);
     
-    var c = client.channels.get("593050699705614338");
+    var c = client.channels.get("593050699705614338");//
     c.send(`${emoji("501700003233005579")}`);
     client.setInterval(function(){
             var now_time = new Date();
@@ -129,8 +129,8 @@ client.on('ready', () => {
                  
                         // Print only read bytes to avoid junk.
                         if (bytes > 0) {
-                            var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
                             console.log(buffr.slice(0, bytes).toString());
+                            var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
                             PSC.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*4)])}`);
                         }
                  
@@ -215,49 +215,6 @@ client.on('message', msg => {
             myserver.sendMessage("=wolf factor "+fullCommand.substr(6));
             gc = msg;
         }
-        if(primaryCommand == "今天考什麼")
-        {
-            var t = new Date();
-            t.setHours(t.getUTCHours()+8);
-            if(((t.getDate()==1||t.getDate()==2||t.getDate()==5)&&t.getHours()>=12)||((t.getDate()==3||t.getDate()==4)&&t.getHours()>=17))
-            {
-                msg.channel.send("放學了啦");
-            }
-            else
-            {
-                fs.open('exam.txt', 'r', function (err, fd) {
- 
-                    if (err) {
-                        return console.error(err);
-                    }
-                 
-                    var buffr = new Buffer(1024);
-                 
-                    fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) 
-                    {
-                        console.log(bytes);
-                        if (err)
-                        {
-                            throw err;
-                        } 
-                 
-                        // Print only read bytes to avoid junk.
-                        if (bytes > 5) {
-                            msg.channel.send(buffr.slice(0, bytes).toString().substr(5));
-                        }
-                        else
-                        {
-                            msg.channel.send("今天沒有考試");
-                        }
-                 
-                        // Close the opened file.
-                        fs.close(fd, function (err) {
-                            if (err) throw err;
-                        });
-                    });
-                })
-            }
-        }
      }
     if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
     {
@@ -296,6 +253,48 @@ client.on('message', msg => {
         client.setTimeout(function(){
             c.send(str[6]);
         },time);
+    }
+    if(msg.content == "tt")
+    {
+        var t = new Date();
+        t.setHours(t.getUTCHours()+8);
+        if(((t.getDay()==1||t.getDay()==2||t.getDay()==5)&&t.getHours()>=12)||((t.getDay()==3||t.getDay()==4)&&t.getHours()>=17))
+        {
+            msg.channel.send("放學了啦");
+        }
+        else
+        {
+            fs.open('exam.txt', 'r', function (err, fd) {
 
+                if (err) {
+                    return console.error(err);
+                }
+                
+                var buffr = new Buffer(1024);
+                
+                fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) 
+                {
+                    console.log(bytes);
+                    if (err)
+                    {
+                        throw err;
+                    } 
+                
+                    // Print only read bytes to avoid junk.
+                    if (bytes > 5) {
+                        msg.channel.send(buffr.slice(0, bytes).toString().substr(5));
+                    }
+                    else
+                    {
+                        msg.channel.send("今天沒有考試");
+                    }
+                
+                    // Close the opened file.
+                    fs.close(fd, function (err) {
+                        if (err) throw err;
+                    });
+                });
+            })
+        }
     }
   });
