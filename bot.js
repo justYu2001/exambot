@@ -254,7 +254,7 @@ client.on('message', msg => {
             c.send(str[6]);
         },time);
     }
-    if(msg.content == "tt")
+    if(msg.content.toLowerCase() == "tt")
     {
         var t = new Date();
         t.setHours(t.getUTCHours()+8);
