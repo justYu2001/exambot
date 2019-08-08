@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
-const cheerio = require('cheerio');
 const client = new Discord.Client();
 client.login(process.env.BOT_TOKEN)
 //process.env.BOT_TOKEN'
