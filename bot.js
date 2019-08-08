@@ -3,7 +3,7 @@ var fs = require('fs');
 var request = require("request");
 const cheerio = require('cheerio');
 const client = new Discord.Client();
-client.login('NTk0NzE5Mjc5NjczMzc2Nzgw.XSw_SQ.D8Yey42rxP1q3GpoC4Gp2fuRsGc')
+client.login(process.env.BOT_TOKEN)
 //process.env.BOT_TOKEN'
 
 function emoji(e_id)
