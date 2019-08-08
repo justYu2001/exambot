@@ -1,8 +1,9 @@
 const Discord = require('discord.js')
 var fs = require('fs');
 var request = require("request");
+const cheerio = require('cheerio');
 const client = new Discord.Client();
-client.login(process.env.BOT_TOKEN)
+client.login('NTk0NzE5Mjc5NjczMzc2Nzgw.XSw_SQ.D8Yey42rxP1q3GpoC4Gp2fuRsGc')
 //process.env.BOT_TOKEN'
 
 function emoji(e_id)
@@ -107,39 +108,23 @@ client.on('ready', () => {
     client.setInterval(function(){
         game_activity();
     },1000);
-    
     var c = client.channels.get("593050699705614338");//
-    c.send(`${emoji("501700003233005579")}`);
+    c.send({files:["https://s.yimg.com/bg/dict/dreye/live/m/stunning.mp3"]});
+
     client.setInterval(function(){
             var now_time = new Date();
-            if(now_time.getUTCHours()+8==16&&now_time.getUTCMinutes()==10&&now_time.getUTCSeconds()==0)
+            if(now_time.getUTCHours()+8==16&&now_time.getUTCMinutes()==0&&now_time.getUTCSeconds()==0)
             {
                 var emojis_list=["604532826649526322","604532855938482176","501699773481484288","607826081440858132"];
-                fs.open('exam.txt', 'r', function (err, fd) {
- 
-                    if (err) {
-                        return console.error(err);
+                fs.readFile('tom_exam.txt', function (err, data) {
+                    if (err) throw err;
+                 
+                    if (data.toString().length >0) 
+                    {
+                        var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
+                        PSC.send("<@&593404925753688064>\n"+data.toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*4)])}`);
                     }
-                 
-                    var buffr = new Buffer(1024);
-                 
-                    fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) {
-                 
-                        if (err) throw err;
-                 
-                        // Print only read bytes to avoid junk.
-                        if (bytes > 0) {
-                            console.log(buffr.slice(0, bytes).toString());
-                            var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
-                            PSC.send("<@&593404925753688064>\n"+buffr.slice(0, bytes).toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*4)])}`);
-                        }
-                 
-                        // Close the opened file.
-                        fs.close(fd, function (err) {
-                            if (err) throw err;
-                        });
-                    });
-                })
+                });
             }
         },1000);
   });
@@ -264,37 +249,86 @@ client.on('message', msg => {
         }
         else
         {
-            fs.open('exam.txt', 'r', function (err, fd) {
-
-                if (err) {
-                    return console.error(err);
-                }
-                
-                var buffr = new Buffer(1024);
-                
-                fs.read(fd, buffr, 0, buffr.length, 0, function (err, bytes) 
+            fs.readFile('today_exam.txt', function (err, data) {
+                if (err) throw err;
+             
+                if (data.toString().length < 5||t.getDay()==6||t.getDay()==7) 
                 {
-                    console.log(bytes);
-                    if (err)
+                    msg.channel.send("今天沒有考試");
+                }
+                else
+                {
+                    msg.channel.send(data.toString().substr(5));
+                }
+            });
+        }
+    }
+    if(msg.content.toLowerCase().startsWith("dic"))
+    {
+        var str;
+        const embed = new Discord.RichEmbed();
+        let word = msg.content.substr(4).split(" ");
+        if(word.length<2)
+        {
+            request({
+                url: "https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/"+word[0],
+                method: "GET"
+              }, function(error, response, body) {
+                if (error || !body) {
+                  return;
+                }else{
+                    var $ = cheerio.load(body);
+                    var target = $(".pos-header");
+                    if(target.length<1)
+                    {/*
+                        var title_emojis=["608629862252412928","608618455905599488"];
+                        str="你的搜尋在字典中未能找到符合**"+word[0]+"**的單字";
+                        embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+" **沒有"+word[0]+"這個單字**\n"+str,"請檢查拼寫是否正確",true);
+                        embed.setColor(0xFF0000);
+                        msg.channel.send({embed});*/
+                    }
+                }
+            });
+        }
+        else
+        {
+            var url_phrase=word[0];
+            var phrase = word[0];
+            for(var i=1;i<word.length;++i)
+            {
+                url_phrase+="+"+word[i];
+                phrase+=" "+word[i];
+            }
+            request({
+                url: "https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/"+url_phrase,
+                method: "GET"
+              }, function(error, response, body) {
+                if (error || !body) {
+                  return;
+                }else{
+                    var $ = cheerio.load(body);
+                    var target = $(".sense-block");
+                    if(target.length<1)
                     {
-                        throw err;
-                    } 
-                
-                    // Print only read bytes to avoid junk.
-                    if (bytes > 5) {
-                        msg.channel.send(buffr.slice(0, bytes).toString().substr(5));
+                        var title_emojis=["608629862252412928","608618455905599488"];
+                        str="你的搜尋在字典中未能找到符合**"+phrase+"**的片語";
+                        embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+" **沒有"+phrase+"這個片語**\n"+str,"請檢查拼寫是否正確",true);
+                        embed.setColor(0xFF0000);/*
+                        msg.channel.send({embed});*/
                     }
                     else
                     {
-                        msg.channel.send("今天沒有考試");
+                        target = $(".phrase");
+                        str="**"+target[0].children[0].data+"**\n片語(phrase)\n";
+                        target = $(".def");
+                        for(var i=0;i<target.length;++i)
+                        {
+                            str+=target.eq(i).text()+"\n";
+                        }/*
+                        msg.channel.send(str);*/
                     }
-                
-                    // Close the opened file.
-                    fs.close(fd, function (err) {
-                        if (err) throw err;
-                    });
-                });
-            })
+                }
+            });
         }
     }
   });
