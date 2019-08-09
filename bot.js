@@ -119,7 +119,7 @@ client.on('ready', () => {
                 fs.readFile('tom_exam.txt', function (err, data) {
                     if (err) throw err;
                  
-                    if (data.toString().length >0) 
+                    if (data.toString().length >4) 
                     {
                         var PSC = client.channels.get("450975130387218457");   //資甲弱智區區
                         PSC.send("<@&593404925753688064>\n"+data.toString()+"\n祝大家明天都能屌虐"+`${emoji(emojis_list[Math.floor(Math.random()*4)])}`);
