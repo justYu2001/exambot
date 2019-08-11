@@ -252,7 +252,7 @@ client.on('message', msg => {
             fs.readFile('today_exam.txt', function (err, data) {
                 if (err) throw err;
              
-                if (data.toString().length < 5||t.getDay()==6||t.getDay()==7) 
+                if (data.toString().length < 5||t.getDay()==6||t.getDay()==0) 
                 {
                     msg.channel.send("今天沒有考試");
                 }
