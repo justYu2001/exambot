@@ -113,7 +113,7 @@ client.on('ready', () => {
 
     client.setInterval(function(){
             var now_time = new Date();
-            if(now_time.getUTCHours()+8==16&&now_time.getUTCMinutes()==12&&now_time.getUTCSeconds()==0)
+            if(now_time.getUTCHours()+8==16&&now_time.getUTCMinutes()==0&&now_time.getUTCSeconds()==0) 
             {
                 var emojis_list=["604532826649526322","604532855938482176","501699773481484288","607826081440858132"];
                 fs.readFile('tom_exam.txt', function (err, data) {
