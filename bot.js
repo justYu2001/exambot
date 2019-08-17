@@ -108,7 +108,7 @@ client.on('ready', () => {
     client.setInterval(function(){
         game_activity();
     },1000);
-    var c = client.channels.get("593050699705614338");//
+    var c = client.channels.get("612180981172142090");//
     c.send({files:["https://s.yimg.com/bg/dict/dreye/live/m/stunning.mp3"]});
 
     client.setInterval(function(){
@@ -184,19 +184,19 @@ client.on('message', msg => {
         }
         if(primaryCommand == "寫公式")
         {
-            var myserver = client.channels.get("593050699705614338");
+            var myserver = client.channels.get("612180981172142090");
             myserver.sendMessage("=tex "+fullCommand.substr(5));
             gc = msg;
         }
         if(primaryCommand == "算")
         {
-            var myserver = client.channels.get("593050699705614338");
+            var myserver = client.channels.get("612180981172142090");
             myserver.sendMessage("=wolf "+fullCommand.substr(3));
             gc = msg;
         }
         if(primaryCommand == "因式分解")
         {
-            var myserver = client.channels.get("593050699705614338");
+            var myserver = client.channels.get("612180981172142090");
             myserver.sendMessage("=wolf factor "+fullCommand.substr(6));
             gc = msg;
         }
@@ -205,7 +205,7 @@ client.on('message', msg => {
     {
         msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
     }
-    if(msg.author.id =="134073775925886976"&&msg.channel.id=="593050699705614338")
+    if(msg.author.id =="134073775925886976"&&msg.channel.id=="612180981172142090")
     {
         if(msg.content.includes("Wolfram|Alpha didn't send a result back."))
         {
