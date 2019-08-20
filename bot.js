@@ -234,16 +234,13 @@ function lpu(word,msg,flag)
                             target = $(".phrase-title");
                             var cmp_phrase="";
                             var temp=target.eq(i).children(".phrase").eq(0).text().split(" ");
-                            if(target.eq(i).children(".phrase").eq(0).text().includes("/"))
+                            for(var j=0;j<temp.length;++j)
                             {
-                                for(var j=0;j<temp.length;++j)
+                                if(temp[j].includes("/"))
                                 {
-                                    if(temp[j].includes("/"))
-                                    {
-                                        temp[j]=temp[j].substring(0,temp[j].indexOf("/"));
-                                    }
-                                    cmp_phrase+=temp[j]+(j==temp.length-1?"":" ");
+                                    temp[j]=temp[j].substring(0,temp[j].indexOf("/"));
                                 }
+                                cmp_phrase+=temp[j]+(j==temp.length-1?"":" ");
                             }
                             if(cmp_phrase==phrase||cmp_phrase.includes(phrase))
                             {
