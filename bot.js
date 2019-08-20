@@ -6,24 +6,6 @@ const client = new Discord.Client();
 client.login(process.env.BOT_TOKEN)
 //process.env.BOT_TOKEN'
 
-//-------------------------同步-------------------
-function serials(tasks, callback) {
-    var step = tasks.length;
-    var result = [];
-  
-    function check(r) {
-      result.push(r);
-      if( result.length === step ){
-        callback();
-      }
-    }
-  
-    tasks.forEach(function(f) {
-      f(check);
-    });
-  }
-
-
 //-----------------表情符號------------------------
 
 function emoji(e_id)
@@ -104,7 +86,7 @@ function return_formula(str,msg)
 
 //-----------------------------------後續查詢-------------------------------
 
-function another_search(msg,syn,syn_n)
+function another_search(msg,syn,syn_n,last_msg_id)
 {
     var del_flag=0;
     msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s "),{maxMatches: 1,time:5*60*1000})
@@ -117,7 +99,7 @@ function another_search(msg,syn,syn_n)
                 embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+str,"請重新輸入",true);
                 embed.setColor(0xFF0000);
                 msg.channel.send({embed});
-                another_search(msg,syn,syn_n);
+                another_search(msg,syn,syn_n,last_msg_id);
                 del_flag=1;
             }
             else
@@ -129,7 +111,7 @@ function another_search(msg,syn,syn_n)
         client.setTimeout(function(){
             if(!del_flag)
             {
-                msg.channel.bulkDelete(1);
+                msg.channel.fetchMessage(last_msg_id).then(d_msg=>d_msg.delete());
             }
         },5*60*1000);
 }
@@ -250,7 +232,20 @@ function lpu(word,msg,flag)
                         for(var i=0;i<n;++i)
                         {
                             target = $(".phrase-title");
-                            if(target.eq(i).children(".phrase").eq(0).text()==phrase||target.eq(i).children(".phrase").eq(0).text().includes(phrase))
+                            var cmp_phrase="";
+                            var temp=target.eq(i).children(".phrase").eq(0).text().split(" ");
+                            if(target.eq(i).children(".phrase").eq(0).text().includes("/"))
+                            {
+                                for(var j=0;j<temp.length;++j)
+                                {
+                                    if(temp[j].includes("/"))
+                                    {
+                                        temp[j]=temp[j].substring(0,temp[j].indexOf("/"));
+                                    }
+                                    cmp_phrase+=temp[j]+(j==temp.length-1?"":" ");
+                                }
+                            }
+                            if(cmp_phrase==phrase||cmp_phrase.includes(phrase))
                             {
                                 embed=new Discord.RichEmbed();
                                 target = $(".phrase-title");
@@ -291,10 +286,10 @@ function lpu(word,msg,flag)
                                     }
                                     if(flag)
                                     {
-                                        embed.addField("或許你想查的是...",syn_str,true);
-                                        embed.setFooter("請輸入s  <想查詢的片語號碼>  進行查詢\n請在5分鐘內進行查詢");
-                                        msg.channel.send({embed});
-                                        another_search(msg,syn,syn_n);
+                                        embed.addField("或許你想查的是...",syn_str+"\n"+"請輸入s  <想查詢的片語號碼>  進行查詢\n請在5分鐘內進行查詢",true);
+                                        msg.channel.send({embed}).then(last_msg=>{
+                                            another_search(msg,syn,syn_n,last_msg.id);
+                                        });
                                     }
                                 }
                             }
@@ -355,8 +350,9 @@ function lpu(word,msg,flag)
                         if(flag)
                         {
                             embed.addField("或許你想查的是...",syn_str+"\n"+"請輸入s  <想查詢的片語號碼>  進行查詢\n請在5分鐘內進行查詢",true);
-                            msg.channel.send({embed});
-                            another_search(msg,syn,syn_n);
+                            msg.channel.send({embed}).then(last_msg=>{
+                                another_search(msg,syn,syn_n,last_msg.id);
+                            });
                         }
                     }
                 }
@@ -473,7 +469,7 @@ function sup_f(pos,word,o_i)
 
 function lvu(word,msg)
 {
-    var str,eng_expl,ch_expl,exam="";
+    var str,phrase,eng_expl,ch_expl,exam="";
     var embed = new Discord.RichEmbed();
     embed.setColor(0xFFFFFF);
     request({
@@ -499,6 +495,7 @@ function lvu(word,msg)
             {
                 target = $(".headword");
                 var hw_n=target.length;
+                var msg_n=0;
                 for(var i=0;i<hw_n;++i)
                 {
                     target = $(".cdo-section-title-hw");
@@ -539,17 +536,62 @@ function lvu(word,msg)
                                     var exam_n=target.eq(p[1]).children(".sense-block").eq(s_i).children(".sense-body").eq(0).children(".def-block").eq(def_i).children(".def-body").eq(0).children(".examp").length;
                                     for(var exam_i=0;exam_i<exam_n;++exam_i)
                                     {
+                                        if(exam_i)
+                                        {
+                                            exam+="\n";
+                                        }
                                         exam+=target.eq(p[1]).children(".sense-block").eq(s_i).children(".sense-body").eq(0).children(".def-block").eq(def_i).children(".def-body").eq(0).children(".examp").eq(exam_i).children(".eg").eq(0).text()+"\n";
                                         exam+=target.eq(p[1]).children(".sense-block").eq(s_i).children(".sense-body").eq(0).children(".def-block").eq(def_i).children(".def-body").eq(0).children(".examp").eq(exam_i).children(".trans").eq(0).text()+"\n";
                                     }
                                     if(exam.length<2)
                                     {
-                                        exam="這個意思在我的字典裡沒有例句。So sad"+`${emoji("501699707618197504")} `;
+                                        exam="這個解釋在我的字典裡沒有例句。So sad"+`${emoji("501699707618197504")} `;
                                     }
-                                    embed.addField(`${emoji("609317785419382795")} `+eng_expl+ch_expl,"\n\n\n"+exam,true);
+                                    if(embed.fields.length<19)
+                                    {
+                                        embed.addField(`${emoji("609317785419382795")} `+eng_expl+ch_expl,"\n\n\n"+exam,false);
+                                    }
                                 }
                             }
-                            msg.channel.send({embed});
+                            if(embed.fields.length>1)
+                            {
+                                msg.channel.send({embed}).then(function(){
+                                    ++msg_n;
+                                    if(msg_n==hw_n)
+                                    {
+                                        target=$(".phrase-block");
+                                        var p_n=target.length;
+                                        for(var i=0;i<p_n;++i)
+                                        {
+                                            embed= new Discord.RichEmbed();
+                                            exam="";
+                                            target=$(".phrase-block");
+                                            phrase=target.eq(i).children(".phrase-head").eq(0).children(".phrase-title").eq(0).text();
+                                            embed.addField("**"+phrase+"**","相關字",false);
+                                            eng_expl=target.eq(i).children(".phrase-body").eq(0).children(".def-block").eq(0).children(".def-head").eq(0).children(".def").eq(0).text()+"\n";
+                                            ch_expl=target.eq(i).children(".phrase-body").eq(0).children(".def-block").eq(0).children(".def-body").eq(0).children(".trans").eq(0).text();
+                                            var exam_n=target.eq(i).children(".phrase-body").eq(0).children(".def-block").eq(0).children(".def-body").eq(0).children(".examp").length;
+                                            for(var j=0;j<exam_n;++j)
+                                            {
+                                                exam+=target.eq(i).children(".phrase-body").eq(0).children(".def-block").eq(0).children(".def-body").eq(0).children(".examp").eq(j).children(".eg").eq(0).text()+"\n";
+                                                exam+=target.eq(i).children(".phrase-body").eq(0).children(".def-block").eq(0).children(".def-body").eq(0).children(".examp").eq(j).children(".trans").eq(0).text()+"\n";
+                                            }
+                                            if(exam.length<2)
+                                            {
+                                                str=(phrase.includes(" ")?"片語":"單字");
+                                                exam="這個"+str+"在我的字典裡沒有例句。So sad"+`${emoji("501699707618197504")} `
+                                            }
+                                            embed.setColor(0xFFFFFF);
+                                            embed.addField(`${emoji("609317785419382795")} `+eng_expl+ch_expl,"\n\n\n"+exam,false);
+                                            msg.channel.send({embed});
+                                        }
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                --hw_n;
+                            }
                     });
                 }
             }
