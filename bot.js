@@ -608,8 +608,6 @@ function lvu(word,msg)
     });
 }
 
-var gc;
-
 var gd = new Date();
 gd.setFullYear(2020);
 gd.setMonth(4);
@@ -636,7 +634,7 @@ client.on('ready', () => {
         game_activity();
     },1000);
     var c = client.channels.get("612180981172142090");//
-    c.send("this supports [named links](https://discordapp.com) on top of ");
+    c.send({files:["https://i.imgur.com/ogbcvHB.png"]});
 
     client.setInterval(function(){
             var now_time = new Date();
@@ -741,6 +739,38 @@ client.on('message', msg => {
             {
                 collector.stop();
             }
+        });
+    }
+    if(msg.content.toLocaleLowerCase().startsWith("fom"))
+    {
+        fs.readFile('公式.txt', function (err, data) {
+            if (err) throw err;
+            var embed = new Discord.RichEmbed();
+            var str=data.toString().split("\n");
+            var title,f="";
+            for(var i=0;i<str.length;++i)
+            {
+                if(!str[i].includes(","))
+                {
+                    if(i)
+                    {
+                        embed.addField(title,f,false);
+                        title=str[i];
+                        str=str.splice(i,1);
+                        --i;
+                    }
+                    else
+                    {
+                        title=str[i];
+                        str=str.splice(i,1);
+                    }
+                }
+                else
+                {
+                    f+=(i+1)+". "+str[i];
+                }
+            }
+            msg.channel.send({embed});
         });
     }
      if(msg.content.startsWith("<@!594719279673376780>")||msg.content.startsWith("<@594719279673376780>"))
