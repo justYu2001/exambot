@@ -130,13 +130,13 @@ function lpu(word,msg,flag)
         phrase+=" "+word[i];
         if(word[i].includes("/"))
         {
-            word[i]=word[i].replace(/\//g,"+");
+            word[i]=word[i].replace(/\//g,"-");
         }
         if(word[i].includes("'"))
         {
-            word[i]=word[i].replace(/'/g,"+");
+            word[i]=word[i].replace(/'/g,"-");
         }
-        url_phrase+="+"+word[i];
+        url_phrase+="-"+word[i];
     }
     request({
         url: "https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/"+url_phrase,
@@ -227,6 +227,7 @@ function lpu(word,msg,flag)
                     }
                     else
                     {
+                        var msg_flag=0;
                         target = $(".phrase-title");
                         var n=target.length;
                         for(var i=0;i<n;++i)
@@ -267,7 +268,9 @@ function lpu(word,msg,flag)
                                 }
                                 embed.addField(`${emoji("609317785419382795")} `+eng_expl+ch_expl,"\n\n\n"+exam,true);
                                 embed.setColor(0xFFFFFF);
-                                msg.channel.send({embed});
+                                msg.channel.send({embed}).then(function(){
+                                    msg_flag=1;
+                                });
                                 embed=new Discord.RichEmbed();
                                 embed.setColor(0x00AA00);
                                 target = $(".tabs__content");
@@ -291,6 +294,14 @@ function lpu(word,msg,flag)
                                 }
                             }
                         }
+                        if(!msg_flag)
+                        {
+                            var title_emojis=["608629862252412928","608618455905599488"];
+                            str="你的搜尋在字典中未能找到符合**"+phrase+"**的片語";
+                            embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+" **沒有"+phrase+"這個片語**\n"+str,"請檢查拼寫是否正確",true);
+                            embed.setColor(0xFF0000);
+                            msg.channel.send({embed});
+                        }
                     }
                 }
                 else
@@ -303,7 +314,8 @@ function lpu(word,msg,flag)
                         embed=new Discord.RichEmbed();
                         embed.setColor(0xFFFFFF);
                         target = $(".headword");
-                        var dis_phrase = "**"+target.eq(i).children(".phrase").eq(0).text()+"**";
+                        console.log(target.eq(i).children(".phrase").eq(0).text());
+                        var dis_phrase = "**"+target.eq(i).text()+"**";
                         embed.addField(dis_phrase,"片語",false);
                         target = $(".sense-body");
                         var def_b=target.eq(i).children(".def-block").length;
@@ -659,6 +671,30 @@ client.on('message', msg => {
             break;
          }
      }
+     if(msg.content.toLocaleLowerCase().startsWith("wf"))
+     {
+        var cmd=msg.content.substr(3);
+        var myserver = client.channels.get("612180981172142090");
+        const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{maxMatches: 1,time:30*1000});
+        myserver.send("=tex "+cmd);
+        collector.on('collect',c_msg=>{
+            if(c_msg.content.includes("Rendering failed. Check your code. You may edit your existing message."))
+            {
+                const embed = new Discord.RichEmbed();
+                var title_emojis=["608629862252412928","608618455905599488"];
+                embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+"**latex語法錯誤**","關於latex的語法請參考[這篇文章](https://walkccc.github.io/blog/2018/02/17/Techniques/latex-syntax/)",true);
+                embed.setColor(0xFF0000);
+                msg.channel.send({embed})
+            }
+            else
+            {
+                var Attachment = (c_msg.attachments).array();
+                Attachment.forEach(function(e){
+                    msg.channel.send({files:[e.url]});
+                });
+            }
+        });
+    }
      if(msg.content.startsWith("<@!594719279673376780>")||msg.content.startsWith("<@594719279673376780>"))
      {
         let fullCommand = msg.content.substr(21)
@@ -697,12 +733,6 @@ client.on('message', msg => {
         {
             return_formula(splitCommand[2],msg);
         }
-        if(primaryCommand == "寫公式")
-        {
-            var myserver = client.channels.get("612180981172142090");
-            myserver.sendMessage("=tex "+fullCommand.substr(5));
-            gc = msg;
-        }
         if(primaryCommand == "算")
         {
             var myserver = client.channels.get("612180981172142090");
@@ -716,24 +746,6 @@ client.on('message', msg => {
             gc = msg;
         }
      }
-    if(msg.content.includes("垃圾廣告")&&msg.author.id!="554654697261105180")
-    {
-        msg.channel.sendMessage(msg.author+"我不會再發垃圾廣告了啦幹")
-    }
-    if(msg.author.id =="134073775925886976"&&msg.channel.id=="612180981172142090")
-    {
-        if(msg.content.includes("Wolfram|Alpha didn't send a result back."))
-        {
-            gc.channel.send("指令錯誤，請重新輸入");
-        }
-        else
-        {
-            var Attachment = (msg.attachments).array();
-            Attachment.forEach(function(e){
-                gc.channel.send({files:[e.url]});
-            });
-        }
-    }
     if(msg.content.toLowerCase() == "tt")
     {
         var t = new Date();
