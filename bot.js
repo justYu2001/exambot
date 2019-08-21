@@ -671,8 +671,8 @@ client.on('message', msg => {
             break;
          }
      }
-     if(msg.content.toLocaleLowerCase().startsWith("wf"))
-     {
+    if(msg.content.toLocaleLowerCase().startsWith("wf"))
+    {
         var cmd=msg.content.substr(3);
         var myserver = client.channels.get("612180981172142090");
         const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{maxMatches: 1,time:30*1000});
@@ -692,6 +692,54 @@ client.on('message', msg => {
                 Attachment.forEach(function(e){
                     msg.channel.send({files:[e.url]});
                 });
+            }
+        });
+    }
+    if(msg.content.toLocaleLowerCase().startsWith("calc"))
+    {
+        var cmd=msg.content.substr(5);
+        var myserver = client.channels.get("612180981172142090");
+        const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{time:30*1000});
+        myserver.send("=wolf "+cmd);
+        collector.on('collect',c_msg=>{
+            if(c_msg.content.includes("Wolfram|Alpha didn't send a result back.Maybe your query was malformed?"))
+            {
+                msg.channel.send("指令錯誤，請重新輸入");
+            }
+            else
+            {
+                var Attachment = (c_msg.attachments).array();
+                Attachment.forEach(function(e){
+                    msg.channel.send({files:[e.url]});
+                });
+            }
+            if(c_msg.embeds.length)
+            {
+                collector.stop();
+            }
+        });
+    }
+    if(msg.content.toLocaleLowerCase().startsWith("fac"))
+    {
+        var cmd=msg.content.substr(4);
+        var myserver = client.channels.get("612180981172142090");
+        const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{time:30*1000});
+        myserver.send("=wolf factor "+cmd);
+        collector.on('collect',c_msg=>{
+            if(c_msg.content.includes("Wolfram|Alpha didn't send a result back.Maybe your query was malformed?"))
+            {
+                msg.channel.send("指令錯誤，請重新輸入");
+            }
+            else
+            {
+                var Attachment = (c_msg.attachments).array();
+                Attachment.forEach(function(e){
+                    msg.channel.send({files:[e.url]});
+                });
+            }
+            if(c_msg.embeds.length)
+            {
+                collector.stop();
             }
         });
     }
@@ -732,18 +780,6 @@ client.on('message', msg => {
         if(primaryCommand == "公式")
         {
             return_formula(splitCommand[2],msg);
-        }
-        if(primaryCommand == "算")
-        {
-            var myserver = client.channels.get("612180981172142090");
-            myserver.sendMessage("=wolf "+fullCommand.substr(3));
-            gc = msg;
-        }
-        if(primaryCommand == "因式分解")
-        {
-            var myserver = client.channels.get("612180981172142090");
-            myserver.sendMessage("=wolf factor "+fullCommand.substr(6));
-            gc = msg;
         }
      }
     if(msg.content.toLowerCase() == "tt")
