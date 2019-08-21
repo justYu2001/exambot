@@ -1,4 +1,5 @@
 數學
+test,
 基電
 電子的電量,https://i.imgur.com/ogbcvHB.png
 1庫倫的電子數,https://i.imgur.com/tYz83MX.png
@@ -8,4 +9,6 @@
 電功率,https://i.imgur.com/en3vSd3.png
 庫倫定律,https://i.imgur.com/pt0tyMU.png
 電子學
+test,
 數邏
+test,
