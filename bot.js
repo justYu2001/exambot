@@ -743,10 +743,11 @@ client.on('message', msg => {
     }
     if(msg.content.toLocaleLowerCase().startsWith("fom"))
     {
+        var str;
+        var embed = new Discord.RichEmbed();
         fs.readFile('公式.txt', function (err, data) {
             if (err) throw err;
-            var embed = new Discord.RichEmbed();
-            var str=data.toString().split("\n");
+            str=data.toString().split("\n");
             var title,f="";
             for(var i=0;i<str.length;++i)
             {
@@ -756,21 +757,31 @@ client.on('message', msg => {
                     {
                         embed.addField(title,f,false);
                         title=str[i];
-                        str=str.splice(i,1);
+                        str.splice(i,1);
                         --i;
+                        f="";
                     }
                     else
                     {
                         title=str[i];
-                        str=str.splice(i,1);
+                        str.splice(i,1);
+                        i--;
                     }
                 }
                 else
                 {
-                    f+=(i+1)+". "+str[i];
+                    f+=(i+1)+". "+str[i].split(",")[0]+"\n";
                 }
             }
-            msg.channel.send({embed});
+            embed.addField(title,f+"\n\n請在3分鐘內選擇你要的公式",false);
+            embed.setColor(0x00DD77);
+            msg.channel.send({embed});/*
+            msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s "),{maxMatches: 1,time:3*60*1000}).then(function(a_msg){
+                var f_url=str[Number(a_msg.first().content.substr(2))-1].split(",");
+                const attachment = new Discord.Attachment(f_url[1]);
+                console.log(f_url[1].toString());
+                msg.channel.send(attachment);
+            });*/
         });
     }
      if(msg.content.startsWith("<@!594719279673376780>")||msg.content.startsWith("<@594719279673376780>"))
