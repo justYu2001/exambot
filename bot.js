@@ -711,7 +711,7 @@ client.on('message', msg => {
         const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{time:30*1000});
         myserver.send("=wolf "+cmd);
         collector.on('collect',c_msg=>{
-            if(c_msg.content.includes("Wolfram|Alpha didn't send a result back.Maybe your query was malformed?"))
+            if(c_msg.content.includes("Wolfram|Alpha didn't send a result back."))
             {
                 msg.channel.send("指令錯誤，請重新輸入");
             }
