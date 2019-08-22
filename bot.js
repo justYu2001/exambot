@@ -505,11 +505,14 @@ function lvu(word,msg)
                     sup_f(pos,w2f,i).then(function(p){
                             embed=new Discord.RichEmbed();
                             target = $(".uk");
-                            var uk_url="https://dictionary.cambridge.org/zht/media/英語-漢語-繁體"+target.eq(0).children().eq(1).attr('data-src-mp3').substr(67);
-                            var uk_ps="["+target.eq(0).children(".pron").eq(0).text().replace(/\//g,"")+"]";                  
-                            target = $(".us");
-                            var us_url="https://dictionary.cambridge.org/zht/media/英語-漢語-繁體"+target.eq(0).children().eq(1).attr('data-src-mp3').substr(67);
-                            var us_ps="["+target.eq(0).children(".pron").eq(0).text().replace(/\//g,"")+"]";
+                            if(target.length>0)
+                            {
+                                var uk_url="https://dictionary.cambridge.org/zht/media/英語-漢語-繁體"+target.eq(0).children().eq(1).attr('data-src-mp3').substr(67);
+                                var uk_ps="["+target.eq(0).children(".pron").eq(0).text().replace(/\//g,"")+"]";                  
+                                target = $(".us");
+                                var us_url="https://dictionary.cambridge.org/zht/media/英語-漢語-繁體"+target.eq(0).children().eq(1).attr('data-src-mp3').substr(67);
+                                var us_ps="["+target.eq(0).children(".pron").eq(0).text().replace(/\//g,"")+"]";
+                            }
                             embed.setColor(0xFFFFFF);
                             embed.addField("**"+word[0].toLowerCase()+"**","("+p[0]+")\n"+"[美式發音]("+us_url+"):"+us_ps+"\n[英式發音]("+uk_url+"):"+uk_ps+"\n"+sup,false);
                             target = $(".pos-body");
@@ -660,6 +663,23 @@ client.on('message', msg => {
             break;
          }
      }
+    if(msg.content.toLocaleLowerCase()=="ed")
+    {
+        var embed = new Discord.RichEmbed();
+        fs.readFile('重要考試.txt', function (err, data) {
+            if (err) throw err;
+            str=data.toString().split("\n");
+            var embed_content="";
+            for(var i=0;i<str.length;++i)
+            {
+                embed_content+=(i+1)+". "+str[i].split(",")[0]+"\n";
+            }
+            embed_content+="\n\n請輸入s <你要查的考試編號>\n請在3分鐘內選擇你要查的考試";
+            embed.addField("**即將到來的重要考試有.....**",embed_content,false);
+            embed.setColor(0x0066FF);
+            msg.channel.send({embed});
+        });
+    }
     if(msg.content.toLocaleLowerCase().startsWith("wf"))
     {
         var cmd=msg.content.substr(3);
