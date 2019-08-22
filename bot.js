@@ -217,6 +217,7 @@ function lpu(word,msg,flag)
                     }
                     else
                     {
+                        console.log(1);
                         var msg_flag=0;
                         target = $(".phrase-title");
                         var n=target.length;
@@ -235,6 +236,7 @@ function lpu(word,msg,flag)
                             }
                             if(cmp_phrase==phrase||cmp_phrase.includes(phrase))
                             {
+                                msg_flag=1;
                                 embed=new Discord.RichEmbed();
                                 target = $(".phrase-title");
                                 var dis_phrase ="**"+target.eq(i).children(".phrase").eq(0).text()+"**";
@@ -258,9 +260,7 @@ function lpu(word,msg,flag)
                                 }
                                 embed.addField(`${emoji("609317785419382795")} `+eng_expl+ch_expl,"\n\n\n"+exam,true);
                                 embed.setColor(0xFFFFFF);
-                                msg.channel.send({embed}).then(function(){
-                                    msg_flag=1;
-                                });
+                                msg.channel.send({embed});
                                 embed=new Discord.RichEmbed();
                                 embed.setColor(0x00AA00);
                                 target = $(".tabs__content");
@@ -269,10 +269,10 @@ function lpu(word,msg,flag)
                                     var syn_n=target.eq(0).children(".pad").eq(0).children().eq(0).children().length;
                                     var syn_str=new String();
                                     var syn=new Array();
-                                    for(var i=0;i<syn_n;++i)
+                                    for(var j=0;j<syn_n;++j)
                                     {
-                                        syn_str+=(i+1)+". "+target.eq(0).children(".pad").eq(0).children().eq(0).children().eq(i).children().eq(0).children().eq(0).children().eq(0).children().eq(0).text()+"\n";
-                                        syn.push(target.eq(0).children(".pad").eq(0).children().eq(0).children().eq(i).children().eq(0).children().eq(0).children().eq(0).children().eq(0).text());
+                                        syn_str+=(j+1)+". "+target.eq(0).children(".pad").eq(0).children().eq(0).children().eq(j).children().eq(0).children().eq(0).children().eq(0).children().eq(0).text()+"\n";
+                                        syn.push(target.eq(0).children(".pad").eq(0).children().eq(0).children().eq(j).children().eq(0).children().eq(0).children().eq(0).children().eq(0).text());
                                     }
                                     if(flag)
                                     {
@@ -286,6 +286,7 @@ function lpu(word,msg,flag)
                         }
                         if(!msg_flag)
                         {
+                            embed=new Discord.RichEmbed();
                             var title_emojis=["608629862252412928","608618455905599488"];
                             str="你的搜尋在字典中未能找到符合**"+phrase+"**的片語";
                             embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+" **沒有"+phrase+"這個片語**\n"+str,"請檢查拼寫是否正確",true);
