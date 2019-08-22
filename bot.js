@@ -46,7 +46,7 @@ function formula_img(src,msg)
 function select_formula(msg,f_arr,cmd_msg_id,last_msg_id)
 {
     var del_flag=0;
-    msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:3*60*1000}).then(function(a_msg){
+    msg.channel.awaitMessages(a_msg=>a_msg.content.toLocaleLowerCase().startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:3*60*1000}).then(function(a_msg){
         if(Number(a_msg.first().content.substr(2))>f_arr.length)
         {
             var embed=new Discord.RichEmbed();
@@ -79,7 +79,7 @@ function select_formula(msg,f_arr,cmd_msg_id,last_msg_id)
 function another_search(msg,syn,syn_n,last_msg_id)
 {
     var del_flag=0;
-    msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:5*60*1000})
+    msg.channel.awaitMessages(a_msg=>a_msg.content.toLocaleLowerCase().startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:5*60*1000})
         .then(function(a_msg){
             if(Number(a_msg.first().content.substr(2))-1>=syn_n)
             {
