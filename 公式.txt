@@ -12,3 +12,4 @@ sin,https://i.imgur.com/Vh4yzH0.png
 波峰因數,https://i.imgur.com/rGtscHc.png
 數邏
 補數,https://i.imgur.com/JbI7FDK.png
+2的補數速解,https://i.imgur.com/rUy0T6i.png
