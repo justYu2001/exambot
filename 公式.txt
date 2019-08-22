@@ -1,6 +1,7 @@
 ﻿數學
 sin,https://i.imgur.com/Vh4yzH0.png
 基電
+歐姆定律,https://i.imgur.com/Qo1AfKe.png
 電子的電量,https://i.imgur.com/ogbcvHB.png
 1庫倫的電子數,https://i.imgur.com/tYz83MX.png
 電子伏特,https://i.imgur.com/Tb7wmPX.png
