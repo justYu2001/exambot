@@ -41,47 +41,37 @@ function formula_img(src,msg)
         });    
 }
 
-//---------------------公式----------------------
-function return_formula(str,msg)
+//---------------------公式選擇----------------------
+
+function select_formula(msg,f_arr,cmd_msg_id,last_msg_id)
 {
-    if(str=="歐姆定律")
-    {
-        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;V=IR";
-        formula_img(url,msg);
-    }
-    if(str=="庫倫定律")
-    {
-        var url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;F=K"+"\\"+"times"+"\\"+"dfrac{Q_1"+"\\"+"times Q_2}{"+"\\"+"varepsilon_rR^2}";
-        formula_img(url,msg);
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K=9"+"\\"+"times"+"10^9";
-        formula_img(url,msg);
-        msg.channel.sendMessage("相對介質系數ε題目沒給就為1，在空氣中也是");
-    }
-    if(str=="K常數")
-    {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;K="+"\\"+"times"+"10^9";
-        formula_img(url,msg);
-    }
-    if(str=="電功率")
-    {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;P=IV=I^2R="+"\\"+"dfrac{V^2}{R}";
-        formula_img(url,msg);
-    }
-    if(str=="電能")
-    {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;W=Pt";
-        formula_img(url,msg);
-    }
-    if(str=="馬力")
-    {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;1HP=746W";
-        formula_img(url,msg);
-    }
-    if(str=="電子的電量")
-    {
-        url = "https://latex.codecogs.com/png.latex?"+"\\"+"dpi{300}&space;"+"\\"+"bg_white&space;e=-1.602"+"\\"+"times10^{-19}C";
-        formula_img(url,msg);
-    }
+    var del_flag=0;
+    msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:3*60*1000}).then(function(a_msg){
+        if(Number(a_msg.first().content.substr(2))>f_arr.length)
+        {
+            var embed=new Discord.RichEmbed();
+            var title_emojis=["608629862252412928","608618455905599488"];
+            str="沒有這個公式編號";
+            embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+str,"請重新輸入",true);
+            embed.setColor(0xFF0000);
+            msg.channel.send({embed});
+            select_formula(msg,f_arr,cmd_msg_id,last_msg_id);
+            del_flag=1;
+        }
+        else
+        {
+            var f_url=f_arr[Number(a_msg.first().content.substr(2))-1].split(",")[1];
+            msg.channel.send({files:[(f_url[f_url.length-1]!='g'?f_url.substring(0,f_url.length-1):f_url)]});
+            del_flag=1;
+        }
+    });
+    client.setTimeout(function(){
+        if(!del_flag)
+        {
+            msg.channel.fetchMessage(cmd_msg_id).then(d_msg=>d_msg.delete());
+            msg.channel.fetchMessage(last_msg_id).then(d_msg=>d_msg.delete());
+        }
+    },3*60*1000);
 }
 
 //-----------------------------------後續查詢-------------------------------
@@ -89,7 +79,7 @@ function return_formula(str,msg)
 function another_search(msg,syn,syn_n,last_msg_id)
 {
     var del_flag=0;
-    msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s "),{maxMatches: 1,time:5*60*1000})
+    msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s ")&&a_msg.author.id==msg.author.id,{maxMatches: 1,time:5*60*1000})
         .then(function(a_msg){
             if(Number(a_msg.first().content.substr(2))-1>=syn_n)
             {
@@ -743,6 +733,7 @@ client.on('message', msg => {
     }
     if(msg.content.toLocaleLowerCase().startsWith("fom"))
     {
+        var cmd_msg_id=msg.id;
         var str;
         var embed = new Discord.RichEmbed();
         fs.readFile('公式.txt', function (err, data) {
@@ -773,15 +764,11 @@ client.on('message', msg => {
                     f+=(i+1)+". "+str[i].split(",")[0]+"\n";
                 }
             }
-            embed.addField(title,f+"\n\n請在3分鐘內選擇你要的公式",false);
+            embed.addField(title,f+"\n\n請輸入s <你要的公式編號>\n請在3分鐘內選擇你要的公式",false);
             embed.setColor(0x00DD77);
-            msg.channel.send({embed});/*
-            msg.channel.awaitMessages(a_msg=>a_msg.content.startsWith("s "),{maxMatches: 1,time:3*60*1000}).then(function(a_msg){
-                var f_url=str[Number(a_msg.first().content.substr(2))-1].split(",");
-                const attachment = new Discord.Attachment(f_url[1]);
-                console.log(f_url[1].toString());
-                msg.channel.send(attachment);
-            });*/
+            msg.channel.send({embed}).then(last_msg=>{
+                select_formula(msg,str,cmd_msg_id,last_msg.id);
+            });
         });
     }
      if(msg.content.startsWith("<@!594719279673376780>")||msg.content.startsWith("<@594719279673376780>"))
