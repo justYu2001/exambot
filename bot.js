@@ -6,6 +6,7 @@ const client = new Discord.Client();
 const ping = require("./events/ping.js");
 const exam_date = require("./events/exam_date.js");
 const write_formula = require("./events/write_formula.js");
+const calculate = require("./events/calculate.js");
 const token = require("./token.js");
 client.login(token);
 
@@ -659,30 +660,7 @@ client.on('message', msg => {
     ping(msg);
     exam_date(msg,client);
     write_formula(msg,client);
-    if(msg.content.toLocaleLowerCase().startsWith("calc"))
-    {
-        var cmd=msg.content.substr(5);
-        var myserver = client.channels.get("612180981172142090");
-        const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{time:30*1000});
-        myserver.send("=wolf "+cmd);
-        collector.on('collect',c_msg=>{
-            if(c_msg.content.includes("Wolfram|Alpha didn't send a result back."))
-            {
-                msg.channel.send("指令錯誤，請重新輸入");
-            }
-            else
-            {
-                var Attachment = (c_msg.attachments).array();
-                Attachment.forEach(function(e){
-                    msg.channel.send({files:[e.url]});
-                });
-            }
-            if(c_msg.embeds.length)
-            {
-                collector.stop();
-            }
-        });
-    }
+    calculate(msg,client);
     if(msg.content.toLocaleLowerCase().startsWith("fac"))
     {
         var cmd=msg.content.substr(4);
