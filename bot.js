@@ -9,6 +9,7 @@ const write_formula = require("./events/write_formula.js");
 const calculate = require("./events/calculate.js");
 const factor = require("./events/factor.js");
 const formula = require("./events/formula.js");
+const test_today = require("./events/test_today.js")
 const token = require("./token.js");
 client.login(token);
 
@@ -632,32 +633,7 @@ client.on('message', msg => {
     calculate(msg,client);
     factor(msg,client);
     formula(msg,client);
-    if(msg.content.toLowerCase() == "tt")
-    {
-        var t = new Date();
-        t.setHours(t.getUTCHours()+8);
-        if(((t.getDay()==1||t.getDay()==2||t.getDay()==5)&&t.getHours()>=12)||((t.getDay()==3||t.getDay()==4)&&t.getHours()>=17))
-        {
-            msg.channel.send("放學了啦");
-        }
-        else
-        {
-            console.log(t.getDay());
-            fs.readFile("./data/today_exam.txt", function (err, data) {
-                if (err) throw err;
-             
-                if (data.toString().length < 5||t.getDay()==6||t.getDay()==0) 
-                {
-                    msg.channel.send("今天沒有考試");
-                }
-                else
-                {
-                    var str=data.toString().substr(5);
-                    msg.channel.send(str);
-                }
-            });
-        }
-    }
+    test_today(msg);
     if(msg.content.toLowerCase().startsWith("dic"))
     {
         var word = msg.content.substr(4).split(" ");
