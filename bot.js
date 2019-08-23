@@ -80,14 +80,14 @@ function select_exam(msg,e_arr,cmd_msg_id,last_msg_id)
             {
                 var days= Math.floor((gd.getTime()-nd.getTime())/(24*60*60*1000));
                 embed.setColor(0x00FFCC);
-                embed.addField("**"+e_arr[0]+"是"+date_str+"**","**距離"+e_arr[0]+"還有"+days+"天**",false);
+                embed.addField("**"+e_arr[0]+"的日期是"+date_str+"**","**距離"+e_arr[0]+"還有"+days+"天**",false);
                 embed.addField("**範圍**:",e_arr[e_arr.length-1],false);
                 msg.channel.send({embed});
             }
             else if(gd.getTime()-nd.getTime()<24*60*60*1000&&gd.getTime()-nd.getTime()>0)
             {
                 embed.setColor(0x00FFCC);
-                embed.addField("**"+e_arr[0]+"是"+date_str+"**","**距離"+e_arr[0]+"**剩不到1天**",false);
+                embed.addField("**"+e_arr[0]+"的日期是"+date_str+"**","**距離"+e_arr[0]+"剩不到1天**",false);
                 embed.addField("**範圍**:",e_arr[e_arr.length-1],false);
                 msg.channel.send({embed});
             }
@@ -100,7 +100,7 @@ function select_exam(msg,e_arr,cmd_msg_id,last_msg_id)
                     tt=data.toString().substr(5);
                 });
                 embed.setColor(0x00FFCC);
-                embed.addField("**"+e_arr[0]+"是今天**","你還有"+date.length-days+"天要考",false);
+                embed.addField("**"+e_arr[0]+"是今天**","你還有"+(date.length-days)+"天要考",false);
                 embed.addField("**範圍:**",tt,false);
                 msg.channel.send({embed});
             }
