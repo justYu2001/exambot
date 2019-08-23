@@ -1,7 +1,5 @@
 {
   
-  "token": process.env.BOT_TOKEN,
-  
   "name": "Exambot",
 
   "description": "Exambot",
