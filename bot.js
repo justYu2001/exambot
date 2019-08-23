@@ -63,11 +63,16 @@ function select_exam(msg,e_arr,cmd_msg_id,last_msg_id)
             var embed=new Discord.RichEmbed();
             e_arr=e_arr[Number(a_msg.first().content.substr(2))-1].split(",");
             var date=e_arr[1].split(".");
+            var date_str=(Number(date[0])+1)+"月"+date[1];
+            for(var i=2;i<date.length;++i)
+            {
+                date_str+=(i==date.length-1?"和":"，")+(Number(date[0])+1)+"月"+date[i]
+            }
             var nd = new Date();
             var gd = new Date();
             nd.setHours(nd.getUTCHours()+8);
             gd.setMonth(date[0]);
-            gd.setDate(date[1].split("(")[0]);
+            gd.setDate(date[1].split("日")[0]);
             gd.setHours(0);
             gd.setMinutes(0);
             gd.setSeconds(0);
@@ -75,20 +80,28 @@ function select_exam(msg,e_arr,cmd_msg_id,last_msg_id)
             {
                 var days= Math.floor((gd.getTime()-nd.getTime())/(24*60*60*1000));
                 embed.setColor(0x00FFCC);
-                embed.addField("**距離"+e_arr[0]+"還有"+days+"天**","範圍:\n"+e_arr[e_arr.length-1],false);
+                embed.addField("**"+e_arr[0]+"是"+date_str+"**","**距離"+e_arr[0]+"還有"+days+"天**",false);
+                embed.addField("**範圍**:",e_arr[e_arr.length-1],false);
                 msg.channel.send({embed});
             }
             else if(gd.getTime()-nd.getTime()<24*60*60*1000&&gd.getTime()-nd.getTime()>0)
             {
                 embed.setColor(0x00FFCC);
-                embed.addField("**距離"+e_arr[0]+"剩不到1天**","範圍:\n"+e_arr[e_arr.length-1],false);
+                embed.addField("**"+e_arr[0]+"是"+date_str+"**","**距離"+e_arr[0]+"**剩不到1天**",false);
+                embed.addField("**範圍**:",e_arr[e_arr.length-1],false);
                 msg.channel.send({embed});
             }
-            else if(gd.getTime()-nd.getTime()<=0&&(nd.getTime()-gd.getTime())/(24*60*60*1000)<=e_arr.length-3)
+            else if(gd.getTime()-nd.getTime()<=0&&(nd.getTime()-gd.getTime())/(24*60*60*1000)<=date.length-1)
             {
+                var days = Math.floor((nd.getTime()-gd.getTime())/(24*60*60*1000));
                 var tt;
+                fs.readFile('today_exam.txt', function (err, data) {
+                    if (err) throw err;
+                    tt=data.toString().substr(5);
+                });
                 embed.setColor(0x00FFCC);
-                embed.addField("**"+e_arr[0]+"是今天**","範圍:\n"+tt,false);
+                embed.addField("**"+e_arr[0]+"是今天**","你還有"+date.length-days+"天要考",false);
+                embed.addField("**範圍:**",tt,false);
                 msg.channel.send({embed});
             }
             del_flag=1;
@@ -689,7 +702,7 @@ client.on('ready', () => {
     client.setInterval(function(){
         game_activity();
     },1000);
-    var c = client.channels.get("612180981172142090");//
+    var c = client.channels.get("612180981172142090");
     c.send({files:["https://i.imgur.com/ogbcvHB.png"]});
 
     client.setInterval(function(){
