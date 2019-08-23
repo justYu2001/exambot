@@ -5,7 +5,8 @@ const cheerio = require('cheerio');
 const client = new Discord.Client();
 const ping = require("./events/ping.js");
 const ed = require("./events/ed.js");
-client.login(process.env.BOT_TOKEN);
+const token = require("./token.js");
+client.login(token);
 //process.env.BOT_TOKEN'
 
 //-----------------表情符號------------------------
