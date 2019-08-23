@@ -394,6 +394,7 @@ module.exports = (msg,client) =>{
                         }
                         if(!y_flag)
                         {
+                            sup="這個名詞沒有複數形";
                             resolve([pos,o_i,sup]);
                         }
                     }
