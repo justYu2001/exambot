@@ -1,6 +1,16 @@
 const Discord = require('discord.js')
 
-module.exports = (msg) =>{
+module.exports = (msg,client) =>{
+
+//----------------------------------表情符號--------------------------------
+
+    function emoji(e_id)
+    {
+        const e = client.emojis.find(emoji => emoji.id === e_id)
+        return e;
+    }
+
+    var cmd_arr=["ed","wf","calc","fac","wtt","dic"];
     if(msg.content.toLocaleLowerCase()=="shm")
     {
         var embed = new Discord.RichEmbed();
@@ -94,6 +104,18 @@ module.exports = (msg) =>{
         if(msg.channel.toString()!=msg.author.toString())
         {
             msg.channel.send("好喔!我已經把指令說明寄給你了");
+        }
+    }
+    if(msg.content.toLocaleLowerCase().startsWith("shm ")&&msg.content.split(" ").length<3)
+    {
+        console.log(Number(msg.content.substr(4)));
+        if(Number(msg.content.substr(4))>7||!cmd_arr.includes(msg.content.substr(4)))
+        {
+            var embed=new Discord.RichEmbed();
+            var title_emojis=["608629862252412928","608618455905599488"];
+            embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+"**指令錯誤，請重新輸入**","對指令不熟嗎?\n輸入 `shm`\n我會傳指令說明給你",true);
+            embed.setColor(0xFF0000);
+            msg.channel.send({embed});
         }
     }
 };

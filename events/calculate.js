@@ -21,7 +21,7 @@ module.exports = (msg,client) =>{
             {
                 var embed=new Discord.RichEmbed();
                 var title_emojis=["608629862252412928","608618455905599488"];
-                embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+"**指令錯誤，請重新輸入**","對指令不熟嗎?\n輸入`shm calc`\n我會傳指令說明給你",true);
+                embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+"**指令錯誤，請重新輸入**","對指令不熟嗎?\n輸入 `shm calc`\n我會傳指令說明給你",true);
                 embed.setColor(0xFF0000);
                 msg.channel.send({embed});
             }
