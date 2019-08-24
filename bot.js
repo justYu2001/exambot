@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 var fs = require('fs');
-var request = require("request");
 const client = new Discord.Client();
 const count_down = require("./events/count_down.js");
 const test_remind = require("./events/test_remind.js")
@@ -12,6 +11,7 @@ const factor = require("./events/factor.js");
 const formula = require("./events/formula.js");
 const test_today = require("./events/test_today.js");
 const look_up_the_dictionary = require("./events/look_up_the_dictionary.js");
+const help = require("./events/help.js");
 const token = require("./token.js");
 client.login(token);
 
@@ -36,4 +36,5 @@ client.on('message', msg => {
     formula(msg,client);
     test_today(msg);
     look_up_the_dictionary(msg,client);
+    help(msg);
   });
