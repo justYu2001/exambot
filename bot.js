@@ -36,5 +36,5 @@ client.on('message', msg => {
     formula(msg,client);
     test_today(msg);
     look_up_the_dictionary(msg,client);
-    help(msg);
+    help(msg,client);
   });
