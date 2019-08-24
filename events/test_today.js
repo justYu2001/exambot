@@ -2,7 +2,7 @@ var fs = require('fs');
 
 module.exports = (msg) =>{
 
-    if(msg.content.toLowerCase() == "tt")
+    if(msg.content.toLowerCase() == "wtt")
     {
         var t = new Date();
         t.setHours(t.getUTCHours()+8);
