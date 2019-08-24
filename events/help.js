@@ -108,8 +108,7 @@ module.exports = (msg,client) =>{
     }
     if(msg.content.toLocaleLowerCase().startsWith("shm ")&&msg.content.split(" ").length<3)
     {
-        console.log(Number(msg.content.substr(4)));
-        if(Number(msg.content.substr(4))>7||!cmd_arr.includes(msg.content.substr(4)))
+        if(Number(msg.content.substr(4))>7||(!cmd_arr.includes(msg.content.substr(4))&&Number(msg.content.substr(4))==NaN))
         {
             var embed=new Discord.RichEmbed();
             var title_emojis=["608629862252412928","608618455905599488"];
