@@ -427,7 +427,7 @@ module.exports = (msg,client) =>{
                     str="你的搜尋在字典中未能找到符合**"+word[0]+"**的單字";
                     embed.addField(`${emoji(title_emojis[Math.floor(Math.random()*2)])}`+" **沒有"+word[0]+"這個單字**\n"+str,"請檢查拼寫是否正確",true);
                     embed.setColor(0xFF0000);
-                    msg.channel.send({embed})
+                    msg.channel.send({embed});
                 }
                 else
                 {
