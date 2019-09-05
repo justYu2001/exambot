@@ -544,7 +544,7 @@ module.exports = (msg,client) =>{
         });
     }
 
-    if(msg.content.toLowerCase().startsWith("dic"))
+    if(msg.content.toLowerCase().startsWith("dic "))
     {
         var word = msg.content.substr(4).split(" ");
         if(word.length<2)
