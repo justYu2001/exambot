@@ -10,7 +10,7 @@ module.exports = (msg,client) =>{
         return e;
     }
 
-    var cmd_arr=["ed","wf","calc","fac","wtt","dic"];
+    var cmd_arr=["ed","wf","calc","fac","wtt"];
     if(msg.content.toLocaleLowerCase()=="shm")
     {
         var embed = new Discord.RichEmbed();
@@ -22,7 +22,6 @@ module.exports = (msg,client) =>{
         embed.addField("**4 . fac**","因式分解");
         embed.addField("**5 . fom**","背公式屌虐你");
         embed.addField("**6 . wtt**","查今天有什麼考試");
-        embed.addField("**7 . dic**","查單字");
         msg.author.send({embed});
         if(msg.channel.toString()!=msg.author.toString())
         {
@@ -95,21 +94,10 @@ module.exports = (msg,client) =>{
             msg.channel.send("好喔!我已經把指令說明寄給你了");
         }
     }
-    if(msg.content.toLocaleLowerCase()=="shm 7"||msg.content.toLocaleLowerCase()=="shm dic")
-    {
-        var embed = new Discord.RichEmbed();
-        embed.setColor(0x00FF00);
-        embed.addField("**指令說明 | dic**","輸入 `dic <你要查的英文單字/片語>`，即可查詢你要的英文單字/片語",false);
-        msg.author.send({embed});
-        if(msg.channel.toString()!=msg.author.toString())
-        {
-            msg.channel.send("好喔!我已經把指令說明寄給你了");
-        }
-    }
     if(msg.content.toLocaleLowerCase().startsWith("shm ")&&msg.content.split(" ").length<3)
     {
 
-        if(Number(msg.content.substr(4))>7||(!cmd_arr.includes(msg.content.substr(4))&&isNaN(Number(msg.content.substr(4)))))
+        if(Number(msg.content.substr(4))>6||(!cmd_arr.includes(msg.content.substr(4))&&isNaN(Number(msg.content.substr(4)))))
         {
             var embed=new Discord.RichEmbed();
             var title_emojis=["608629862252412928","608618455905599488"];
