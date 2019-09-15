@@ -24,6 +24,7 @@ module.exports = (msg,client) =>{
             {
                 var embed=new Discord.RichEmbed();
                 e_arr=e_arr[Number(a_msg.first().content.substr(2))-1].split(",");
+                e_arr[e_arr.length-1]=e_arr[e_arr.length-1].replace(/ /,'\n');
                 var date=e_arr[1].split(".");
                 var date_str=(Number(date[0])+1)+"月"+date[1];
                 for(var i=2;i<date.length;++i)
