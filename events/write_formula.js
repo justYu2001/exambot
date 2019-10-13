@@ -15,7 +15,7 @@ module.exports = (msg,client) =>{
         const collector = new Discord.MessageCollector(myserver,m=>m.author.id=="134073775925886976",{maxMatches: 1,time:30*1000});
         myserver.send("=tex "+cmd);
         collector.on('collect',c_msg=>{
-            if(c_msg.content.includes("Rendering failed. Check your code. You may edit your existing message."))
+            if(c_msg.content.includes("Rendering failed. Check your code."))
             {
                 const embed = new Discord.RichEmbed();
                 var title_emojis=["608629862252412928","608618455905599488"];
