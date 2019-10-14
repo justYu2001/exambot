@@ -87,7 +87,7 @@ module.exports = (msg,client) =>{
             if (err) throw err;
             str=data.toString().split("\n");
             var embed_content="";
-            for(var i=0;i<str.length;++i)
+            for(var i=0;i<str.length-1;++i)
             {
                 embed_content+=(i+1)+". "+str[i].split(",")[0]+"\n";
             }
