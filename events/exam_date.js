@@ -61,11 +61,11 @@ module.exports = (msg,client) =>{
                     fs.readFile("./data/today_exam.txt", function (err, data) {
                         if (err) throw err;
                         tt=data.toString().substr(5);
+                        embed.setColor(0x00FFCC);
+                        embed.addField("**"+e_arr[0]+"是今天**","你還有"+(date.length-days)+"天要考",false);
+                        embed.addField("**範圍:**",tt,false);
+                        msg.channel.send({embed});
                     });
-                    embed.setColor(0x00FFCC);
-                    embed.addField("**"+e_arr[0]+"是今天**","你還有"+(date.length-days)+"天要考",false);
-                    embed.addField("**範圍:**",tt,false);
-                    msg.channel.send({embed});
                 }
                 del_flag=1;
             }
