@@ -62,7 +62,7 @@ module.exports = (msg,client) =>{
                         if (err) throw err;
                         tt=data.toString().substr(5);
                         embed.setColor(0x00FFCC);
-                        embed.addField("**"+e_arr[0]+"是今天**","你還有"+(date.length-days)+"天要考",false);
+                        embed.addField("**"+e_arr[0]+"是今天**","你還有"+(date.length-days-1)+"天要考",false);
                         embed.addField("**範圍:**",tt,false);
                         msg.channel.send({embed});
                     });
@@ -87,7 +87,7 @@ module.exports = (msg,client) =>{
             if (err) throw err;
             str=data.toString().split("\n");
             var embed_content="";
-            for(var i=0;i<str.length-1;++i)
+            for(var i=0;i<str.length;++i)
             {
                 embed_content+=(i+1)+". "+str[i].split(",")[0]+"\n";
             }
