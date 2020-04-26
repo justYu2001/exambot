@@ -21,7 +21,7 @@ module.exports = (client) => {
         type: 'PLAYING',
       });
     } else {
-      client.user.setActivity('考統測囉!GO!GO!GO!', { type: 'PLAYING' });
+      client.user.setActivity('考統測囉!Go!Go!Go!', { type: 'PLAYING' });
     }
     if (
       (nd.getUTCHours() + 8) % 24 === 0 &&
@@ -29,7 +29,11 @@ module.exports = (client) => {
       nd.getUTCSeconds() === 0
     ) {
       var c = client.channels.get('681171510609838100');
-      c.send(`<@&593404925753688064> 剩 ${d} 天`);
+      if (d === 0) {
+        c.send('<@&593404925753688064> 剩最後一天');
+      } else {
+        c.send(`<@&593404925753688064> 剩 ${d + 1} 天`);
+      }
     }
   }
 
