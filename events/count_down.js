@@ -29,9 +29,10 @@ module.exports = (client) => {
       nd.getUTCSeconds() === 0
     ) {
       var c = client.channels.get('681171510609838100');
-      if (d === 0) {
-        c.send('<@&593404925753688064> 剩最後一天');
-      } else {
+      nd = new Date();
+      time = gd.getTime() - (nd.getTime() + 8 * 60 * 60 * 1000);
+      d = parseInt(time / (24 * 60 * 60 * 1000));
+      if (d >= 0) {
         c.send(`<@&593404925753688064> 剩 ${d + 1} 天`);
       }
     }
